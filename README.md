@@ -64,6 +64,13 @@ docker run -d -p 8080:80 --name my-calculator seedance-calculator
 
 详见 [DEPLOY.md](DEPLOY.md)。
 
+## 附录文档（独立调研）
+
+以下内容是针对外部项目 `mesh2splat` 的部署调研与执行文档，不属于本计算器功能模块：
+
+- [Mesh2Splat 本地部署 PRD（MVP）](docs/prd/mesh2splat-local-deployment-prd.md)
+- [Mesh2Splat MVP 操作手册](docs/mvp/mesh2splat-mvp-runbook.md)
+
 ## 项目结构
 
 ```
@@ -72,6 +79,7 @@ seedance-calculator/
 ├── Dockerfile       # Docker 镜像
 ├── vercel.json      # Vercel 路由配置
 ├── DEPLOY.md        # 部署指南
+├── docs/            # 外部项目调研与执行文档
 └── README.md
 ```
 
