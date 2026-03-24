@@ -26,5 +26,5 @@
 
 1. 克隆 mesh2splat：`git clone https://github.com/electronicarts/mesh2splat.git`
 2. **Windows**：按 [WINDOWS_SETUP.md](./WINDOWS_SETUP.md) 准备环境，然后 `cd mesh2splat && run_build_release.bat`
-3. **macOS**：`brew install cmake glfw glew`，然后执行 `scripts/mesh2splat-macos-build.sh`
+3. **macOS**：`brew install cmake glfw glew`，在仓库根目录执行 `./scripts/mesh2splat-macos-build.sh`（需已存在同级 `mesh2splat` 目录，见脚本说明）
 4. 运行可执行文件，加载 `.glb`，按 [MVP_ACCEPTANCE.md](./MVP_ACCEPTANCE.md) 验收

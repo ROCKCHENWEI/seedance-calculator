@@ -1,87 +1,31 @@
-# Seedance 2.0 视频 Token 计算器
+# Mesh2Splat 本地部署（Windows / macOS）
 
-根据视频时长与计费模式，估算 [Seedance 2.0](https://seedance-2-ai.com/) 视频生成 API 的 Token 消耗与生产成本。
+中文文档、脚本与验收清单，用于在本地构建与使用 [Electronic Arts Mesh2Splat](https://github.com/electronicarts/mesh2splat)（网格快速转为 3D Gaussian Splatting）。
 
-[![Vercel](https://img.shields.io/badge/Vercel-在线演示-black?logo=vercel)](https://260306.vercel.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Mesh2Splat（3D Gaussian Splatting）本地部署
+## 快速入口
 
-本仓库含 [Electronic Arts Mesh2Splat](https://github.com/electronicarts/mesh2splat) 的 **Windows / macOS** 中文说明、脚本与验收清单，入口见 **[docs/mesh2splat/README.md](docs/mesh2splat/README.md)**；Windows 最快步骤见 **[docs/mesh2splat/WINDOWS_QUICKSTART.md](docs/mesh2splat/WINDOWS_QUICKSTART.md)**。
-
----
-
-## 功能
-
-- **多计费模式**：API 纯视频生成、API 视频编辑、Web 标准、Web HD
-- **灵活输入**：支持分钟 + 秒，自定义重试次数
-- **实时计算**：输入即得预估 tokens 与成本
-- **零依赖**：单文件 HTML，无后端、无构建
-
-## 在线使用
-
-**[https://260306.vercel.app](https://260306.vercel.app)**
-
-## 计费参考
-
-| 模式 | 定价 |
+| 用途 | 链接 |
 |------|------|
-| API - 纯视频生成 | 46 元/百万 tokens |
-| API - 视频编辑 | 28 元/百万 tokens |
-| Web 平台 - 标准 | 180 积分/条 |
-| Web 平台 - HD | 240 积分/条 |
+| Windows 最快测试 | [docs/mesh2splat/WINDOWS_QUICKSTART.md](docs/mesh2splat/WINDOWS_QUICKSTART.md) |
+| 文档总览 | [docs/mesh2splat/README.md](docs/mesh2splat/README.md) |
+| MVP 验收 | [docs/mesh2splat/MVP_ACCEPTANCE.md](docs/mesh2splat/MVP_ACCEPTANCE.md) |
 
-*定价来源于公开信息，以官方为准。*
-
-## 本地运行
-
-```bash
-# 克隆仓库
-git clone https://github.com/ROCKCHENWEI/seedance-calculator.git
-cd seedance-calculator
-
-# 用浏览器直接打开
-open calculator.html
-
-# 或启动本地服务
-python3 -m http.server 8080
-# 访问 http://localhost:8080/calculator.html
-```
-
-## 部署
-
-### Vercel（推荐）
-
-```bash
-vercel
-```
-
-### Docker
-
-```bash
-docker build -t seedance-calculator .
-docker run -d -p 8080:80 --name my-calculator seedance-calculator
-# 访问 http://localhost:8080
-```
-
-### 其他方式
-
-详见 [DEPLOY.md](DEPLOY.md)。
-
-## 项目结构
+## 仓库结构
 
 ```
-seedance-calculator/
-├── calculator.html   # 计算器主文件（单文件，含样式与逻辑）
-├── Dockerfile       # Docker 镜像
-├── vercel.json      # Vercel 路由配置
-├── DEPLOY.md        # 部署指南
+├── docs/mesh2splat/   # 部署与构建说明
+├── scripts/           # Windows PowerShell / macOS Shell
+├── patches/           # CMake macOS 补丁（相对上游）
+├── LICENSE
 └── README.md
 ```
 
-## 公式维护
+## 说明
 
-计费规则变更时，编辑 `calculator.html`，搜索 `const TOKENS_PER_SECOND` 或 `const PRICE_` 修改对应常量即可。
+- **可执行程序**不在本仓库中；请按文档克隆官方 `electronicarts/mesh2splat` 后在本地编译。
+- 若将本仓库与 `mesh2splat` 放在**同级目录**，可使用 `scripts/mesh2splat-win-build.ps1`（Windows）或 `scripts/mesh2splat-macos-build.sh`（macOS）辅助构建。
 
 ## License
 

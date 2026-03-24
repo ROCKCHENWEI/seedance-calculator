@@ -24,10 +24,10 @@ run_build_release.bat
 bin\Release\Mesh2Splat.exe
 ```
 
-（可选）若本仓库 `seedance-calculator` 已 clone 到同级目录，也可在 `mesh2splat` 根目录执行：
+（可选）若本部署仓库已与 `mesh2splat` **同级 clone**，可在 `mesh2splat` 根目录执行（将文件夹名换成你的 clone 目录名）：
 
 ```powershell
-..\seedance-calculator\scripts\mesh2splat-win-build.ps1
+..\gaussian-splatting-Windows-2\scripts\mesh2splat-win-build.ps1
 ```
 
 ## 3. 快速验收
