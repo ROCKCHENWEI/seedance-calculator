@@ -1,3 +1,11 @@
+# 260306
+
+## SkillTable
+
+餐饮 Agent 技能平台（Next.js + Prisma + MCP）位于 **[web/](web/)** — 见 [web/README.md](web/README.md)。
+
+---
+
 # 本仓库已迁移
 
 **Mesh2Splat 本地部署、脚本与可编译源码**已统一维护在：

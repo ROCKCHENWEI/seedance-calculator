@@ -1,0 +1,250 @@
+openapi: 3.1.0
+info:
+  title: SkillTable API
+  version: 0.2.0
+  description: |
+    Agent-first dining platform. Authenticate with `Authorization: Bearer <api_key>` or `X-API-Key`.
+    The same deployment also exposes a Streamable HTTP MCP endpoint at `/api/mcp` for agent-native calls.
+servers:
+  - url: /
+security:
+  - BearerAuth: []
+  - XApiKeyAuth: []
+paths:
+  /api/v1/recommend:
+    post:
+      summary: Recommend restaurants (P0)
+      operationId: skilltable_recommend
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecommendRequest"
+      responses:
+        "200":
+          description: Ranked candidates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  trace_id:
+                    type: string
+                  candidates:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/RecommendCandidate"
+  /api/v1/restaurants/search:
+    get:
+      summary: Search restaurants
+      operationId: skilltable_search_restaurants
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+        - in: query
+          name: tags
+          schema:
+            type: string
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: List
+  /api/v1/restaurants:
+    post:
+      summary: Create restaurant (ops)
+      operationId: skilltable_create_restaurant
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateRestaurant"
+      responses:
+        "201":
+          description: Created
+  /api/v1/restaurants/{id}:
+    get:
+      summary: Restaurant detail
+      operationId: skilltable_get_restaurant
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+  /api/v1/restaurants/{id}/menu:
+    get:
+      summary: Structured menu
+      operationId: skilltable_get_menu
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+  /api/v1/queue/join:
+    post:
+      summary: Join queue
+      operationId: skilltable_queue_join
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [restaurant_id]
+              properties:
+                restaurant_id:
+                  type: string
+                party_size:
+                  type: integer
+                  default: 1
+      responses:
+        "200":
+          description: Ticket issued
+  /api/v1/queue/{ticketId}:
+    get:
+      summary: Queue status
+      operationId: skilltable_queue_status
+      parameters:
+        - in: path
+          name: ticketId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+  /api/v1/queue/call-next:
+    post:
+      summary: Call next ticket (staff/demo)
+      operationId: skilltable_queue_call_next
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [restaurant_id]
+              properties:
+                restaurant_id:
+                  type: string
+      responses:
+        "200":
+          description: OK
+  /api/v1/metrics:
+    get:
+      summary: Usage metrics (24h)
+      operationId: skilltable_metrics
+      responses:
+        "200":
+          description: OK
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API Key
+    XApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  schemas:
+    RecommendRequest:
+      type: object
+      properties:
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+            longitude:
+              type: number
+            regionId:
+              type: string
+        time_window:
+          type: string
+        budget_per_person:
+          type: number
+        dietary:
+          type: array
+          items:
+            type: string
+        party_size:
+          type: integer
+        scene:
+          type: string
+        preference_tags:
+          type: array
+          items:
+            type: string
+    RecommendCandidate:
+      type: object
+      properties:
+        restaurant_id:
+          type: string
+        name:
+          type: string
+        match_reason:
+          type: string
+        confidence:
+          type: number
+    CreateRestaurant:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+        address:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        capabilities:
+          type: array
+          items:
+            type: string
+            enum: [menu, queue]
+        externalUrl:
+          type: string
+        provider:
+          type: string
+        mcpStreamableUrl:
+          type: string
+          description: Optional streamable HTTP MCP for third-party restaurant skills
+        skillReferenceUrl:
+          type: string
+          description: e.g. GitHub repo for the upstream skill
+    RestaurantPublic:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        address: { type: string }
+        latitude: { type: number }
+        longitude: { type: number }
+        tags:
+          type: array
+          items: { type: string }
+        capabilities:
+          type: array
+          items: { type: string }
+        provider: { type: string }
+        external_url: { type: string, nullable: true }
+        mcp_streamable_url: { type: string, nullable: true }
+        skill_reference_url: { type: string, nullable: true }

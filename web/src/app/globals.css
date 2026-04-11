@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+  --foreground-soft: #d6d6d6;
+  --panel: #060606;
+  --panel-soft: rgba(255, 255, 255, 0.03);
+  --line: #ffffff;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-terminal);
+  --font-mono: var(--font-pixel);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.07), transparent 44%),
+    var(--background);
+  background-size: 22px 22px, 22px 22px, 100% 100%, auto;
+  color: var(--foreground);
+  font-family: var(--font-terminal), monospace;
+  letter-spacing: 0.02em;
+}
+
+a,
+button {
+  cursor: pointer;
+}
+
+::selection {
+  background: #ffffff;
+  color: #000000;
+}
+
+.pixel-heading {
+  font-family: var(--font-pixel), monospace;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.pixel-kicker {
+  font-family: var(--font-pixel), monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.pixel-panel {
+  border: 4px solid var(--line);
+  background: var(--panel);
+  box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.85);
+}
+
+.pixel-panel-soft {
+  border: 3px solid var(--line);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--restaurant-accent-soft, #101010) 52%, transparent), transparent 75%),
+    var(--panel-soft);
+  box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.2);
+}
+
+.pixel-button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid currentColor;
+  background: #000000;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-pixel), monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  line-height: 1.7;
+  text-transform: uppercase;
+  box-shadow: 4px 4px 0 currentColor;
+  transition:
+    transform 150ms steps(2, end),
+    box-shadow 150ms steps(2, end),
+    background-color 150ms steps(2, end),
+    color 150ms steps(2, end);
+}
+
+.pixel-button:hover,
+.pixel-button:focus-visible {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 currentColor;
+  background: currentColor;
+  color: #000000;
+}
+
+.pixel-link {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.pixel-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 2px solid currentColor;
+  background: #000000;
+  padding: 0.25rem 0.5rem;
+  font-family: var(--font-pixel), monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.pixel-logo-frame {
+  border: 4px solid currentColor;
+  background: #000000;
+  box-shadow: 6px 6px 0 currentColor;
+}
+
+.pixel-input {
+  min-height: 44px;
+  width: 100%;
+  border: 4px solid #ffffff;
+  background: #000000;
+  padding: 0.6rem 0.75rem;
+  color: #ffffff;
+  font-family: var(--font-terminal), monospace;
+  font-size: 1.65rem;
+  line-height: 1;
+}
+
+.pixel-input:focus-visible,
+.pixel-button:focus-visible,
+a:focus-visible {
+  outline: 4px solid #ffffff;
+  outline-offset: 4px;
+}
+
+.retro-grid {
+  position: relative;
+  overflow: hidden;
+}
+
+.retro-grid::before {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(transparent 0, rgba(255, 255, 255, 0.04) 50%, transparent 100%);
+  content: "";
+}
+
+.muted-copy {
+  color: var(--foreground-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}

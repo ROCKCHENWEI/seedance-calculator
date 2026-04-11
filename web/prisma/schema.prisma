@@ -1,0 +1,93 @@
+// SkillTable — Agent-first dining platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model ApiKey {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  label     String?
+  createdAt DateTime @default(now())
+  logs      RequestLog[]
+}
+
+model Restaurant {
+  id           String   @id @default(cuid())
+  name         String
+  latitude     Float?
+  longitude    Float?
+  tags         String   @default("[]") // JSON string array
+  address      String?
+  capabilities String   @default("[]") // JSON: menu, queue
+  provider     String   @default("SkillTable")
+  externalUrl  String?
+  /// Official MCP (streamable HTTP) when restaurant is backed by an external skill server
+  mcpStreamableUrl String?
+  /// e.g. https://github.com/JinGuYuan/jinguyuan-dumpling-skill
+  skillReferenceUrl String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  categories MenuCategory[]
+  tickets    QueueTicket[]
+}
+
+model MenuCategory {
+  id           String   @id @default(cuid())
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  name         String
+  sortOrder    Int      @default(0)
+  items        MenuItem[]
+
+  @@index([restaurantId])
+}
+
+model MenuItem {
+  id          String   @id @default(cuid())
+  categoryId  String
+  category    MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name        String
+  priceCents  Int
+  currency    String   @default("CNY")
+  spiceLevel  Int?
+  allergens   String?  @default("[]") // JSON array
+  available   Boolean  @default(true)
+  description String?
+
+  @@index([categoryId])
+}
+
+model QueueTicket {
+  id               String   @id @default(cuid())
+  restaurantId     String
+  restaurant       Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  status           String // waiting | called | completed | expired | cancelled
+  partySize        Int      @default(1)
+  publicNumber     String
+  queuePosition    Int?
+  estimatedWaitMin Int?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([restaurantId, status])
+}
+
+model RequestLog {
+  id         String   @id @default(cuid())
+  route      String
+  traceId    String?
+  apiKeyId   String?
+  apiKey     ApiKey?  @relation(fields: [apiKeyId], references: [id], onDelete: SetNull)
+  status     Int
+  durationMs Int
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+}
